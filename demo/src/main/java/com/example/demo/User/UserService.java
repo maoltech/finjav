@@ -1,5 +1,6 @@
 package com.example.demo.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +11,25 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService (UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public List<User> getUsers(){
 
-        return List.of(
+        return userRepository.findAll();
+    }
 
-                new User(
-                        1L,
-                        "Marry",
-                        "marry27@gmail.com",
-                        LocalDate.of(2000, Month.JANUARY, 5),
-                        21
-                )
-        );
+    public void addNewUser(User user) {
+
+        if (user.getEmail() == null){
+            throw  (null);
+        }
+
+        userRepository.findUserByEmail(user.getEmail());
+        System.out.println(user);
     }
 }
